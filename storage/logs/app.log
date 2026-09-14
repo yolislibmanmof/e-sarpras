@@ -1,0 +1,5 @@
+2026-08-25 16:55:46 syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" @ C:\laragon\www\e-sarpras\views\public\pages\building_detail.php:74
+2026-08-25 17:00:33 syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" @ C:\laragon\www\e-sarpras\views\public\pages\building_detail.php:74
+2026-08-25 18:32:04 syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" @ C:\laragon\www\e-sarpras\views\public\pages\building_detail.php:74
+2026-08-25 18:33:45 syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" @ C:\laragon\www\e-sarpras\views\public\pages\building_detail.php:74
+2026-08-25 19:18:35 SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition FROM assets WHERE room_id = ? ORDER BY code ASC' at line 1 @ C:\laragon\www\e-sarpras\app\Core\Database.php:53

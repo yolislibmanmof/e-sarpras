@@ -1,0 +1,32 @@
+.sub-hero { position: relative; overflow: hidden; background: linear-gradient(135deg, #0b4f42, var(--primary-deep)); color: #fff; padding: 3.6rem 0 3.2rem; }
+.sub-hero .hero-inner { opacity: 0.8; }
+.sub-hero .container { position: relative; z-index: 1; }
+.crumb { display: inline-flex; gap: 0.5rem; align-items: center; font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.65); margin-bottom: 0.9rem; }
+.crumb a { color: var(--accent-2); }
+
+/* PERUBAHAN: judul putih tebal kini berganti warna berjalan */
+.sub-hero h1 {
+    font-size: clamp(1.7rem, 3.6vw, 2.5rem);
+    background: linear-gradient(90deg, #ffffff 0%, #a7f3d0 25%, #f0b429 50%, #2dd4bf 75%, #ffffff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent;
+    animation: shimmer 6s linear infinite;
+}
+
+.sub-hero p { color: rgba(255, 255, 255, 0.82); max-width: 660px; margin-top: 0.6rem; }
+
+.page-body { padding: 3.2rem 0 1.5rem; }
+
+.split-grid { display: grid; grid-template-columns: 1.5fr 0.8fr; gap: 2rem; align-items: start; }
+.side-panel { position: sticky; top: 92px; display: flex; flex-direction: column; gap: 1.2rem; }
+.info-card h4 { color: var(--primary-dark); margin-bottom: 0.7rem; font-size: 1rem; }
+.info-card p { font-size: 0.9rem; }
+.mini-steps { list-style: none; }
+.mini-steps li { display: flex; gap: 0.65rem; margin-bottom: 0.65rem; font-size: 0.88rem; color: var(--muted); align-items: flex-start; }
+.mini-steps b { flex-shrink: 0; width: 22px; height: 22px; border-radius: 8px; background: var(--primary-light); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; }
+
+@media (max-width: 900px) {
+    .split-grid { grid-template-columns: 1fr; }
+    .side-panel { position: static; }
+}

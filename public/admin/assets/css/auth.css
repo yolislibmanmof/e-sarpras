@@ -1,0 +1,54 @@
+.auth-body{min-height:100vh;display:flex;background:linear-gradient(135deg,#06382e,#0b4f42)}
+.auth-brand{flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:4rem;color:#fff}
+.auth-brand::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:44px 44px}
+.auth-canvas{position:absolute;inset:0;z-index:0;pointer-events:none}
+.auth-orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:blob 14s ease-in-out infinite}
+.auth-orb.o1{width:420px;height:420px;background:radial-gradient(circle,rgba(45,212,191,.6),transparent 65%);top:-120px;right:-80px}
+.auth-orb.o2{width:360px;height:360px;background:radial-gradient(circle,rgba(240,180,41,.4),transparent 65%);bottom:-140px;left:-60px;animation-delay:-7s}
+@keyframes blob{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(26px,-34px) scale(1.1)}66%{transform:translate(-22px,26px) scale(.95)}}
+
+/* Tulisan sambutan dengan warna bergradasi berjalan */
+.auth-tag{
+    position:relative;z-index:1;
+    display:inline-block;margin-bottom:.9rem;
+    font-size:.78rem;font-weight:800;letter-spacing:.3em;text-transform:uppercase;
+    background:linear-gradient(90deg,#2dd4bf,#f0b429,#a7f3d0,#ffffff,#2dd4bf);
+    background-size:300% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shimmer 5s linear infinite;
+}
+.auth-brand h1{
+    font-size:2.2rem;position:relative;z-index:1;
+    background:linear-gradient(90deg,#fff,#a7f3d0,#f0b429,#2dd4bf,#fff);
+    background-size:200% auto;
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    animation:shimmer 6s linear infinite;
+}
+@keyframes shimmer{to{background-position:200% center}}
+.auth-brand p{color:rgba(255,255,255,.8);max-width:420px;position:relative;z-index:1}
+.auth-back{margin-top:1.8rem;align-self:flex-start;position:relative;z-index:1}
+
+.auth-side{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem;background:var(--bg)}
+.auth-card{background:#fff;width:min(430px,100%);padding:2.6rem;border-radius:22px;box-shadow:var(--shadow-lg);text-align:center;position:relative;overflow:hidden}
+.auth-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--accent-2),var(--accent))}
+.auth-logo{width:58px;height:58px;margin:0 auto 1rem;border-radius:16px;background:linear-gradient(135deg,var(--primary),var(--accent-2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:800;box-shadow:0 12px 26px rgba(15,111,92,.35)}
+.auth-card h2{color:var(--primary-dark);font-size:1.3rem}
+.auth-subtitle{color:var(--muted);font-size:.88rem;margin-bottom:1.3rem}
+
+.auth-form{text-align:left}
+.auth-form label{display:block;font-weight:700;font-size:.82rem;margin:.95rem 0 .4rem;color:var(--ink)}
+.auth-form input{width:100%;padding:.72rem .95rem;border:1.5px solid var(--border);border-radius:12px;font-size:.92rem;font-family:var(--font);background:#fdfefe;transition:border .25s ease,box-shadow .25s ease}
+.auth-form input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(15,111,92,.12),0 0 16px rgba(45,212,191,.2)}
+.auth-form .btn{margin-top:1.3rem}
+
+.auth-note{margin-top:1.2rem;font-size:.78rem;color:var(--muted)}
+.auth-alert{background:#fee2e2;color:#991b1b;border-radius:10px;padding:.6rem .9rem;font-size:.85rem;margin-bottom:1rem;text-align:left}
+
+html[data-theme="dark"] .auth-side{background:var(--bg)}
+html[data-theme="dark"] .auth-card{background:var(--card)}
+html[data-theme="dark"] .auth-card h2{color:#a7f3d0}
+html[data-theme="dark"] .auth-form label{color:var(--ink)}
+html[data-theme="dark"] .auth-form input{background:#0f201a;color:var(--ink)}
+html[data-theme="dark"] .auth-alert{background:#450a0a;color:#fca5a5}
+
+@media (max-width:900px){.auth-brand{display:none}}

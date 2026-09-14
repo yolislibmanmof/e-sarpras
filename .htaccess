@@ -1,0 +1,30 @@
+Options -Indexes
+
+<FilesMatch "^\.env">
+    Require all denied
+</FilesMatch>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # ------------------------------------------------------------------
+    # Blokir akses langsung ke folder sensitif
+    # ------------------------------------------------------------------
+    RewriteRule ^app(/.*)?$ - [F,L]
+    RewriteRule ^bootstrap(/.*)?$ - [F,L]
+    RewriteRule ^config(/.*)?$ - [F,L]
+    RewriteRule ^database(/.*)?$ - [F,L]
+    RewriteRule ^routes(/.*)?$ - [F,L]
+    RewriteRule ^storage(/.*)?$ - [F,L]
+    RewriteRule ^vendor(/.*)?$ - [F,L]
+    RewriteRule ^views(/.*)?$ - [F,L]
+    RewriteRule ^\. - [F,L]
+
+    # ------------------------------------------------------------------
+    # URL kanonik: alihkan root proyek ke /public/
+    # Catatan: apabila nama folder proyek diubah, sesuaikan path
+    # /e-sarpras/public/ pada baris RewriteRule di bawah ini.
+    # ------------------------------------------------------------------
+    RewriteCond %{REQUEST_URI} !/public(/|$) [NC]
+    RewriteRule ^(.*)$ /e-sarpras/public/$1 [R=301,L]
+</IfModule>
