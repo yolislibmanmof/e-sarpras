@@ -36,10 +36,14 @@ class CampusMapController extends Controller
             $params
         );
 
-        $mapSvg = $db->selectOne(
-            'SELECT svg_content FROM campus_maps WHERE building_id = ? AND floor_level = ?',
-            [$bId, $fLevel]
-        );
+        $mapSvg = null;
+        if ($this->tableExists('campus_maps')) {
+            $row = $db->selectOne(
+                'SELECT svg_content FROM campus_maps WHERE building_id = ? AND floor_level = ?',
+                [$bId, $fLevel]
+            );
+            $mapSvg = $row['svg_content'] ?? null;
+        }
 
         /* Pemetaan kode ruangan -> id untuk klik pada denah SVG */
         $roomMap = [];
@@ -52,8 +56,23 @@ class CampusMapController extends Controller
             'bId'       => $bId,
             'fLevel'    => $fLevel,
             'rooms'     => $rooms,
-            'mapSvg'    => $mapSvg['svg_content'] ?? null,
+            'mapSvg'    => $mapSvg,
             'roomMap'   => $roomMap,
+            'mapTableMissing' => !$this->tableExists('campus_maps'),
         ], 'public/layouts/main');
+    }
+
+    /** Periksa apakah tabel ada di database. */
+    private function tableExists(string $table): bool
+    {
+        try {
+            $row = $this->db()->selectOne(
+                "SELECT COUNT(*) AS c FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = ?",
+                [$table]
+            );
+            return $row !== null && (int) ($row['c'] ?? 0) > 0;
+        } catch (\Throwable $e) {
+            return false;
+        }
     }
 }

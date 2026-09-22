@@ -8,7 +8,6 @@ a{text-decoration:none;color:inherit}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:linear-gradient(var(--primary),var(--primary-dark));border-radius:999px}
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.035;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.7'/></svg>")}
-html[data-theme="dark"] body::after{opacity:.06}
 .btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:.45rem;padding:.62rem 1.3rem;border-radius:12px;border:none;font-weight:700;font-size:.88rem;cursor:pointer;transition:var(--transition);font-family:var(--font)}
 .btn-primary{background:linear-gradient(135deg,#12876f,var(--primary-dark));color:#fff;box-shadow:0 8px 20px rgba(15,111,92,.28)}
 .btn-primary::after{content:'';position:absolute;top:0;left:-70%;width:45%;height:100%;background:linear-gradient(120deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-20deg);transition:left .6s ease}
@@ -33,12 +32,10 @@ html[data-theme="dark"] .flash-error{background:#450a0a;color:#fca5a5;border-col
 .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.22,.68,.32,1)}
 .reveal.revealed{opacity:1;transform:none}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
-/* LOADER MEREK */
 #admin-loader{position:fixed;inset:0;background:linear-gradient(135deg,#06382e,#0b4f42);z-index:9999;display:flex;align-items:center;justify-content:center;transition:opacity .5s ease,visibility .5s}
 #admin-loader .ld{width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,var(--accent-2),var(--primary));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.4rem;animation:ldPulse 1s ease infinite}
 @keyframes ldPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(45,212,191,.5)}50%{transform:scale(1.08);box-shadow:0 0 0 18px rgba(45,212,191,0)}}
 #admin-loader.off{opacity:0;visibility:hidden}
-/* TOAST */
 #toastWrap{position:fixed;right:22px;bottom:96px;z-index:120;display:flex;flex-direction:column;gap:.6rem;max-width:340px}
 .toast{padding:.8rem 1rem;border-radius:14px;font-size:.86rem;font-weight:600;box-shadow:var(--shadow-lg);animation:toastIn .45s cubic-bezier(.22,.68,.32,1) both;position:relative;overflow:hidden}
 .toast::after{content:'';position:absolute;left:0;bottom:0;height:3px;width:100%;background:currentColor;opacity:.3;animation:flashBar 4s linear forwards}
@@ -48,14 +45,12 @@ html[data-theme="dark"] .flash-error{background:#450a0a;color:#fca5a5;border-col
 .toast-error{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
 html[data-theme="dark"] .toast-success{background:#052e16;color:#86efac;border-color:#14532d}
 html[data-theme="dark"] .toast-error{background:#450a0a;color:#fca5a5;border-color:#7f1d1d}
-/* FAB */
 .fab-wrap{position:fixed;right:26px;bottom:26px;z-index:80;display:flex;flex-direction:column-reverse;align-items:center;gap:.6rem}
 .fab-main{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent-2));color:#fff;font-size:1.5rem;border:none;cursor:pointer;box-shadow:0 14px 30px rgba(15,111,92,.4);transition:var(--transition);display:flex;align-items:center;justify-content:center}
 .fab-wrap.open .fab-main{transform:rotate(45deg)}
 .fab-item{padding:.5rem 1rem;border-radius:999px;background:var(--card);border:1px solid var(--border);color:var(--primary-dark);font-size:.78rem;font-weight:700;box-shadow:var(--shadow);opacity:0;transform:translateY(10px) scale(.9);pointer-events:none;transition:.3s cubic-bezier(.22,.68,.32,1)}
 .fab-wrap.open .fab-item{opacity:1;transform:none;pointer-events:auto}
 .fab-wrap.open .fab-item:nth-child(2){transition-delay:.05s}.fab-wrap.open .fab-item:nth-child(3){transition-delay:.1s}.fab-wrap.open .fab-item:nth-child(4){transition-delay:.15s}.fab-wrap.open .fab-item:nth-child(5){transition-delay:.2s}
-/* OVERRIDES MODE GELAP */
 html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea,html[data-theme="dark"] .topbar-search,html[data-theme="dark"] .topbar-icon{background:#0f201a;color:var(--ink)}
 html[data-theme="dark"] .data-table thead th{background:#122b23}
 html[data-theme="dark"] .table-toolbar{background:linear-gradient(180deg,#12241e,#12211c)}
@@ -66,4 +61,13 @@ html[data-theme="dark"] .cal-day{background:#122b23}
 html[data-theme="dark"] .cal-has{background:#17352b;color:#a7f3d0}
 html[data-theme="dark"] .page-link{background:transparent}
 html[data-theme="dark"] .topbar-clock{background:#0f201a}
+
+/* PERBAIKAN: pratinjau surat WAJIB tetap bertema terang pada mode gelap,
+   karena kertas surat selalu putih dengan tinta hitam. */
+html[data-theme="dark"] #pvSheet{background:#fff !important;}
+html[data-theme="dark"] #pvSheet,
+html[data-theme="dark"] #pvSheet *{color:#000 !important;border-color:#000 !important;}
+html[data-theme="dark"] #pvSheet .pv-frame,
+html[data-theme="dark"] .pv-frame{background:#dfe7e4 !important;}
+
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}

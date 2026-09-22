@@ -1,9 +1,13 @@
 .navbar {
     position: sticky; top: 0; z-index: 100;
     background: var(--glass);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
     border-bottom: 1px solid rgba(227, 234, 231, 0.7);
     transition: var(--transition);
+}
+.navbar::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
 }
 .navbar::after {
     content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
@@ -13,51 +17,73 @@
     opacity: 0.75;
 }
 @keyframes gradientSlide { to { background-position: 300% 0; } }
-.navbar.scrolled { box-shadow: 0 10px 30px rgba(6, 56, 46, 0.10); background: rgba(255, 255, 255, 0.92); }
-.navbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.75rem 0; }
+.navbar.scrolled { box-shadow: 0 10px 30px rgba(6, 56, 46, 0.12); background: rgba(255, 255, 255, 0.94); }
 
-.navbar-brand { display: flex; align-items: center; gap: 0.65rem; font-weight: 800; }
+.navbar-inner { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; padding: 0.7rem 0; transition: padding 0.3s ease; flex-wrap: nowrap; }
+
+/* Efek menyusut saat digulir */
+.navbar.scrolled .navbar-inner { padding: 0.4rem 0; }
+.navbar.scrolled .brand-mark { width: 34px; height: 34px; border-radius: 10px; }
+.navbar.scrolled .brand-text { font-size: 0.92rem; }
+.navbar.scrolled .nav-link { padding: 0.42rem 0.7rem; }
+.navbar.scrolled .nav-link-admin { padding: 0.4rem 0.95rem; }
+
+/* ---------------- BRAND ---------------- */
+.navbar-brand { display: flex; align-items: center; gap: 0.65rem; font-weight: 800; min-width: 0; }
 .brand-mark {
-    width: 40px; height: 40px; border-radius: 12px;
+    width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
     background: linear-gradient(135deg, var(--primary), var(--primary-deep));
     color: #fff; display: flex; align-items: center; justify-content: center;
-    font-weight: 800; box-shadow: 0 6px 16px rgba(15, 111, 92, 0.35);
+    font-weight: 800;
+    box-shadow: 0 6px 16px rgba(15, 111, 92, 0.35), 0 0 0 2px rgba(240, 180, 41, 0.35);
     transition: var(--transition);
 }
-.navbar-brand:hover .brand-mark { transform: rotate(-6deg) scale(1.06); }
+.navbar-brand:hover .brand-mark { transform: rotate(-6deg) scale(1.06); box-shadow: 0 8px 20px rgba(15, 111, 92, 0.4), 0 0 0 3px rgba(240, 180, 41, 0.5); }
 .brand-text {
-    color: var(--primary-dark); font-size: 1.15rem; white-space: nowrap;
+    color: var(--primary-dark); font-size: 1.06rem; font-weight: 800;
     background: linear-gradient(135deg, var(--primary-dark), var(--primary));
     -webkit-background-clip: text; background-clip: text;
+    white-space: nowrap; letter-spacing: 0.01em;
+    transition: font-size 0.3s ease;
 }
+.navbar-brand img { flex-shrink: 0; }
 
-.navbar-menu { display: flex; align-items: center; gap: 0.2rem; }
+/* ---------------- KAPSUL KACA MENU ---------------- */
+.navbar-menu {
+    display: flex; align-items: center; gap: 0.15rem; flex-shrink: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.45));
+    border: 1px solid rgba(227, 234, 231, 0.9);
+    border-radius: 999px; padding: 0.28rem;
+    box-shadow: 0 6px 18px rgba(6, 56, 46, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
 
 .nav-link {
     position: relative;
     display: flex; align-items: center; gap: 0.45rem;
-    padding: 0.55rem 0.85rem; border-radius: 10px;
+    padding: 0.5rem 0.85rem; border-radius: 999px;
     color: var(--muted); font-weight: 600; font-size: 0.9rem;
     white-space: nowrap; background: none; border: none; cursor: pointer;
     font-family: var(--font);
-    transition: color 0.25s ease, background 0.25s ease;
+    transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
 }
 .nav-link svg { width: 16px; height: 16px; flex-shrink: 0; transition: transform 0.3s ease; }
-.nav-link:hover { color: var(--primary-dark); }
+.nav-link:hover { color: var(--primary-dark); background: var(--primary-light); transform: translateY(-1px); }
 .nav-link:hover svg { transform: translateY(-2px) scale(1.1); }
-.nav-link::after {
-    content: ''; position: absolute; left: 0.85rem; right: 0.85rem; bottom: 0.2rem;
-    height: 2px; border-radius: 999px;
-    background: linear-gradient(90deg, var(--primary), var(--accent-2));
-    transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+.nav-link.active {
+    color: #fff;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    box-shadow: 0 6px 16px rgba(15, 111, 92, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
-.nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); }
-.nav-link.active { color: var(--primary-dark); background: var(--primary-light); }
-.nav-link.active::after { display: none; }
+.nav-link.active::before {
+    content: ''; position: absolute; inset: 0; border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.28), transparent 60%);
+    pointer-events: none;
+}
+.nav-link.active svg { color: #fff; }
 
 /* ---------------- Dropdown Layanan (panel kaca) ---------------- */
 .nav-drop { position: relative; }
-.nav-drop-btn::after { display: none; }
 .drop-caret {
     width: 7px; height: 7px; margin-left: 2px;
     border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
@@ -65,10 +91,10 @@
 }
 .nav-drop:hover .drop-caret, .nav-drop.active-drop .drop-caret { transform: rotate(225deg); }
 .nav-drop-panel {
-    position: absolute; top: calc(100% + 12px); left: 50%;
+    position: absolute; top: calc(100% + 14px); left: 50%;
     transform: translateX(-50%) translateY(10px);
     min-width: 260px;
-    background: rgba(255, 255, 255, 0.96);
+    background: rgba(255, 255, 255, 0.97);
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--border); border-radius: 16px;
     box-shadow: var(--shadow-lg);
@@ -110,36 +136,62 @@
 
 /* ---------------- Login Admin ---------------- */
 .nav-link-admin {
-    margin-left: 0.6rem;
+    margin-left: 0.5rem;
     display: flex; align-items: center; gap: 0.45rem;
     border: 1.5px solid var(--primary); color: var(--primary);
     border-radius: 999px; padding: 0.5rem 1.1rem;
     font-weight: 700; font-size: 0.88rem; white-space: nowrap;
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 3px rgba(15, 111, 92, 0.06);
     transition: var(--transition);
 }
 .nav-link-admin svg { width: 15px; height: 15px; }
-.nav-link-admin:hover { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; box-shadow: 0 10px 22px rgba(15, 111, 92, 0.35); transform: translateY(-2px); }
+.nav-link-admin:hover { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border-color: transparent; box-shadow: 0 10px 22px rgba(15, 111, 92, 0.35), 0 0 0 3px rgba(45, 212, 191, 0.25); transform: translateY(-2px); }
+
+/* ---------------- Aksesibilitas ---------------- */
+.nav-link:focus-visible, .nav-link-admin:focus-visible, .navbar-toggle:focus-visible {
+    outline: 2px solid var(--accent-2); outline-offset: 2px;
+}
 
 /* ---------------- Toggle mobile ---------------- */
 .navbar-toggle { display: none; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 0.4rem; }
 .navbar-toggle span { width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: var(--transition); }
 
-/* ---------------- Responsif ---------------- */
-@media (max-width: 900px) {
+/* ---------------- Penyesuaian bertingkat (nama tetap satu baris) ---------------- */
+@media (max-width: 1400px) {
+    .navbar-inner { gap: 0.6rem; }
+    .brand-text { font-size: 0.96rem; }
+    .navbar-menu { gap: 0.05rem; padding: 0.24rem; }
+    .nav-link { padding: 0.45rem 0.62rem; font-size: 0.85rem; gap: 0.35rem; }
+    .nav-link svg { width: 14px; height: 14px; }
+    .nav-link-admin { padding: 0.42rem 0.9rem; font-size: 0.82rem; margin-left: 0.35rem; }
+    .drop-item b { font-size: 0.85rem; }
+}
+@media (max-width: 1250px) {
+    .brand-text { font-size: 0.88rem; }
+    .nav-link { padding: 0.42rem 0.55rem; font-size: 0.82rem; }
+    .nav-link svg { width: 13px; height: 13px; }
+    .nav-link-admin { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+}
+
+/* ---------------- Responsif (menu lipat) ---------------- */
+@media (max-width: 1100px) {
     .navbar-toggle { display: flex; }
     .navbar-menu {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        background: rgba(255, 255, 255, 0.97);
+        display: none; position: absolute; top: calc(100% + 6px); left: 1rem; right: 1rem;
+        background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(16px);
         flex-direction: column; align-items: stretch;
-        padding: 1rem; border-bottom: 1px solid var(--border);
-        box-shadow: 0 20px 40px rgba(6, 56, 46, 0.12);
+        padding: 0.8rem; border-bottom: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: 0 20px 40px rgba(6, 56, 46, 0.15);
         animation: fadeUp 0.3s ease both;
     }
     .navbar-menu.open { display: flex; }
-    .nav-link { justify-content: flex-start; }
-    .nav-link::after { display: none; }
-    .nav-link-admin { margin-left: 0; justify-content: center; }
+    .nav-link { justify-content: flex-start; padding: 0.6rem 0.85rem; font-size: 0.92rem; border-radius: 12px; }
+    .nav-link svg { width: 16px; height: 16px; }
+    .nav-link-admin { margin: 0.4rem 0 0; justify-content: center; padding: 0.6rem 1.1rem; font-size: 0.9rem; }
+    .brand-text { font-size: 1rem; }
     .nav-drop-panel {
         position: static; transform: none; opacity: 1; visibility: visible;
         box-shadow: none; border: none; background: transparent;

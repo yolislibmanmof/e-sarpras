@@ -3,3 +3,5 @@
 2026-08-25 18:32:04 syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" @ C:\laragon\www\e-sarpras\views\public\pages\building_detail.php:74
 2026-08-25 18:33:45 syntax error, unexpected token "endforeach", expecting "elseif" or "else" or "endif" @ C:\laragon\www\e-sarpras\views\public\pages\building_detail.php:74
 2026-08-25 19:18:35 SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'condition FROM assets WHERE room_id = ? ORDER BY code ASC' at line 1 @ C:\laragon\www\e-sarpras\app\Core\Database.php:53
+2026-09-22 21:38:28 SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-sarpras.campus_maps' doesn't exist @ C:\laragon\www\e-sarpras\app\Core\Database.php:60
+2026-09-22 21:38:34 SQLSTATE[42S02]: Base table or view not found: 1146 Table 'e-sarpras.campus_maps' doesn't exist @ C:\laragon\www\e-sarpras\app\Core\Database.php:60

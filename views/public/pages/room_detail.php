@@ -1,4 +1,17 @@
 <?php require base_path('views/public/partials/wow_style.php'); ?>
+<?php
+$dbR = \App\Core\Database::instance();
+$assetsFull = $dbR->select('SELECT id, code, name, `condition` FROM assets WHERE room_id = ? ORDER BY code ASC', [$room['id']]);
+$booked = $dbR->selectOne(
+    "SELECT COUNT(DISTINCT DATE(start_at)) AS d
+     FROM room_bookings
+     WHERE room_id = ? AND status NOT IN ('Ditolak','Dibatalkan')
+       AND start_at >= NOW() AND start_at <= DATE_ADD(NOW(), INTERVAL 14 DAY)",
+    [$room['id']]
+);
+$bookedDays = (int) ($booked['d'] ?? 0);
+$utilPct = (int) round($bookedDays / 14 * 100);
+?>
 
 <section class="sub-hero">
     <div class="hero-inner"></div>
@@ -7,6 +20,11 @@
         <span class="crumb"><a href="<?= base_url('/gedung'); ?>">Gedung &amp; Ruang</a> &rarr; <?= e($room['code']); ?></span>
         <h1><?= e($room['name']); ?></h1>
         <p><?= e($room['room_type']); ?> &middot; <?= e($room['building_name'] ?? '-'); ?></p>
+        <p style="margin-top:.8rem;">
+            <span class="badge <?= e(status_badge_class($room['condition'])); ?>"><?= e($room['condition']); ?></span>
+            <span class="badge badge-info">Kapasitas <?= (int) $room['capacity']; ?></span>
+            <?php if ((int) $room['is_disability_friendly'] === 1): ?><span class="badge badge-success">Aksesibel</span><?php endif; ?>
+        </p>
     </div>
 </section>
 
@@ -17,6 +35,25 @@
     </div>
 </section>
 <?php endif; ?>
+
+<section class="section" style="padding:2.4rem 0 0;">
+    <div class="container">
+        <div class="ring-wrap">
+            <div class="ring" style="--off:<?= (int) (264 * (1 - $utilPct / 100)); ?>">
+                <svg width="92" height="92"><circle class="bgc" cx="46" cy="46" r="42"/><circle class="fgc" cx="46" cy="46" r="42"/></svg>
+                <div class="val"><?= (int) $utilPct; ?>%<small>Utilisasi 14 hari</small></div>
+            </div>
+            <div class="ring" style="--off:0">
+                <svg width="92" height="92"><circle class="bgc" cx="46" cy="46" r="42"/><circle class="fgc" cx="46" cy="46" r="42"/></svg>
+                <div class="val"><?= (int) $room['capacity']; ?><small>Kapasitas</small></div>
+            </div>
+            <div class="ring" style="--off:0">
+                <svg width="92" height="92"><circle class="bgc" cx="46" cy="46" r="42"/><circle class="fgc" cx="46" cy="46" r="42"/></svg>
+                <div class="val"><?= count($assetsFull); ?><small>Aset</small></div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <section class="section page-body">
     <div class="container">
@@ -60,19 +97,20 @@
         </div>
 
         <h2 class="section-title" style="margin-top:2.6rem;">Aset di Ruangan Ini</h2>
-        <?php if ($assets === []): ?>
+        <?php if ($assetsFull === []): ?>
             <div class="public-alert public-alert-error">Belum ada aset tercatat pada ruangan ini.</div>
         <?php else: ?>
             <div class="cards-grid">
-                <?php foreach ($assets as $asset): ?>
-                    <div class="card bento shine">
+                <?php foreach ($assetsFull as $asset): ?>
+                    <a class="card bento shine" href="<?= base_url('/aset-profil/' . (int) $asset['id']); ?>" style="display:block;">
                         <div class="bento-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
                         </div>
                         <h3><?= e($asset['code']); ?></h3>
                         <p><?= e($asset['name']); ?></p>
                         <p style="margin-top:.7rem;"><span class="badge <?= e(status_badge_class($asset['condition'])); ?>"><?= e($asset['condition']); ?></span></p>
-                    </div>
+                        <span class="service-link" style="margin-top:.6rem;display:inline-block;">Lihat Profil &rarr;</span>
+                    </a>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>

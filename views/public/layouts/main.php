@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e(($title ?? 'Beranda') . ' - ' . config('app.name')); ?></title>
     <meta name="description" content="Sistem Informasi Sarana dan Prasarana Kampus">
+    <script>try{if(localStorage.getItem('es_theme')==='dark'){document.documentElement.setAttribute('data-theme','dark');}}catch(e){}</script>
     <?php
     $fav = setting_value('app_favicon', '');
     $favType = '';
@@ -28,6 +29,7 @@
     <link rel="stylesheet" href="<?= asset_url('css/ticket.css'); ?>">
     <link rel="stylesheet" href="<?= asset_url('css/responsive.css'); ?>">
     <link rel="stylesheet" href="<?= asset_url('css/ultimate.css'); ?>">
+    <link rel="stylesheet" href="<?= asset_url('css/dark.css'); ?>">
 </head>
 <body>
     <?php require base_path('views/public/layouts/navbar.php'); ?>
@@ -51,5 +53,6 @@
     <script src="<?= asset_url('js/main.js'); ?>"></script>
     <script src="<?= asset_url('js/ticket-form.js'); ?>"></script>
     <script src="<?= asset_url('js/ultimate.js'); ?>"></script>
+    <script src="<?= asset_url('js/theme.js'); ?>"></script>
 </body>
 </html>

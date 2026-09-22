@@ -8,16 +8,17 @@
         <span class="crumb"><a href="<?= base_url('/'); ?>">Beranda</a> &rarr; Gedung &amp; Ruang</span>
         <h1>Gedung &amp; Ruang Kampus</h1>
         <p>Jelajahi profil gedung, ruangan, kondisi, dan fasilitas aksesibilitas yang dikelola Bagian Sarana dan Prasarana.</p>
+        <p style="margin-top:.8rem;"><span class="badge badge-success"><span class="live-dot" style="margin-right:.4rem;"></span><?= (int) $stats['buildings']; ?> gedung &middot; <?= (int) $stats['rooms']; ?> ruangan terpantau</span></p>
     </div>
 </section>
 
 <section class="section" style="padding:2.4rem 0 0;">
     <div class="container">
         <div class="stats-grid">
-            <div class="stat-card shine"><span class="stat-value"><?= (int) $stats['buildings']; ?></span><span class="stat-label">Gedung</span></div>
-            <div class="stat-card shine"><span class="stat-value"><?= (int) $stats['rooms']; ?></span><span class="stat-label">Ruangan</span></div>
-            <div class="stat-card shine"><span class="stat-value"><?= (int) $stats['accessible']; ?></span><span class="stat-label">Gedung Aksesibel</span></div>
-            <div class="stat-card shine"><span class="stat-value"><?= (int) $stats['assets']; ?></span><span class="stat-label">Aset Tercatat</span></div>
+            <div class="stat-card shine"><span><span class="stat-value"><?= (int) $stats['buildings']; ?></span><span class="stat-label">Gedung</span></span></div>
+            <div class="stat-card shine"><span><span class="stat-value"><?= (int) $stats['rooms']; ?></span><span class="stat-label">Ruangan</span></span></div>
+            <div class="stat-card shine"><span><span class="stat-value"><?= (int) $stats['accessible']; ?></span><span class="stat-label">Gedung Aksesibel</span></span></div>
+            <div class="stat-card shine"><span><span class="stat-value"><?= (int) $stats['assets']; ?></span><span class="stat-label">Aset Tercatat</span></span></div>
         </div>
     </div>
 </section>
@@ -43,12 +44,20 @@
             <button type="submit" class="btn btn-primary">Cari</button>
         </form>
 
+        <!-- Filter kondisi interaktif -->
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0 0;" id="condChips">
+            <button class="badge badge-info" data-f="" type="button" style="cursor:pointer;">Semua Kondisi</button>
+            <?php foreach (['Baik', 'Rusak Ringan', 'Rusak Sedang', 'Rusak Berat'] as $c): ?>
+                <button class="badge <?= e(status_badge_class($c)); ?>" data-f="<?= e($c); ?>" type="button" style="cursor:pointer;"><?= e($c); ?></button>
+            <?php endforeach; ?>
+        </div>
+
         <?php if ($rows === []): ?>
             <div class="public-alert public-alert-error">Tidak ada gedung yang cocok dengan pencarian Anda.</div>
         <?php else: ?>
-            <div class="cards-grid">
+            <div class="cards-grid" id="bCards" style="margin-top:1.2rem;">
                 <?php foreach ($rows as $row): ?>
-                    <div class="card bento shine">
+                    <div class="card bento shine" data-cond="<?= e($row['condition']); ?>">
                         <?php if (!empty($row['photo'])): ?>
                             <img src="<?= base_url('/media/' . $row['photo']); ?>" alt="<?= e($row['name']); ?>" style="width:100%;height:150px;object-fit:cover;border-radius:14px;margin-bottom:1rem;box-shadow:var(--shadow);">
                         <?php endif; ?>
@@ -63,7 +72,10 @@
                                 <span class="badge badge-success">Ramah Disabilitas</span>
                             <?php endif; ?>
                         </p>
-                        <a class="service-link" href="<?= base_url('/gedung/' . $row['id']); ?>">Lihat Detail</a>
+                        <div style="display:flex;gap:1rem;margin-top:.4rem;flex-wrap:wrap;">
+                            <a class="service-link" href="<?= base_url('/gedung/' . $row['id']); ?>">Lihat Detail</a>
+                            <a class="service-link" href="<?= base_url('/peta?b=' . (int) $row['id']); ?>">Peta</a>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -108,3 +120,23 @@
         <?php endif; ?>
     </div>
 </section>
+
+<script>
+(function () {
+    var wrap = document.getElementById('bCards');
+    var chips = document.querySelectorAll('#condChips button');
+    if (!wrap) { return; }
+    chips.forEach(function (ch) {
+        ch.addEventListener('click', function () {
+            var f = ch.getAttribute('data-f');
+            wrap.querySelectorAll('[data-cond]').forEach(function (card) {
+                card.style.display = (f === '' || card.getAttribute('data-cond') === f) ? '' : 'none';
+            });
+            chips.forEach(function (c) {
+                c.style.outline = (c === ch) ? '2px solid var(--accent-2)' : 'none';
+                c.style.outlineOffset = '2px';
+            });
+        });
+    });
+})();
+</script>

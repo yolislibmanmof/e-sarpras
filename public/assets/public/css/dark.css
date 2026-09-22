@@ -1,0 +1,68 @@
+/* ================================================================== */
+/* MODE GELAP SISI PUBLIK                                              */
+/* ================================================================== */
+html[data-theme="dark"]{--bg:#0c1713;--card:#12211c;--border:#204036;--text:#e8f5f0;--muted:#93b2a8;--glass:rgba(12,23,19,.82);--primary-light:#123528;--shadow:0 10px 30px rgba(0,0,0,.4);--shadow-lg:0 24px 60px rgba(0,0,0,.5)}
+html[data-theme="dark"] body{background:var(--bg);color:var(--text)}
+
+/* ---------------- Navbar ---------------- */
+html[data-theme="dark"] .navbar.scrolled{background:rgba(12,23,19,.94)}
+html[data-theme="dark"] .navbar-menu{background:linear-gradient(180deg,rgba(18,33,28,.75),rgba(18,33,28,.45));border-color:var(--border);box-shadow:0 6px 18px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06)}
+html[data-theme="dark"] .nav-link:hover{background:var(--primary-light)}
+html[data-theme="dark"] .nav-drop-panel{background:rgba(18,33,28,.97)}
+html[data-theme="dark"] .nav-link-admin{background:rgba(18,33,28,.6);color:#a7f3d0;border-color:#2dd4bf;box-shadow:0 0 0 3px rgba(45,212,191,.08)}
+html[data-theme="dark"] .brand-text{background:linear-gradient(135deg,#a7f3d0,#2dd4bf);-webkit-background-clip:text;background-clip:text}
+html[data-theme="dark"] .navbar-toggle span{background:var(--text)}
+
+/* Ikon tombol tema */
+.nav-theme .icon-moon{display:none}
+html[data-theme="dark"] .nav-theme .icon-moon{display:block}
+html[data-theme="dark"] .nav-theme .icon-sun{display:none}
+
+/* ---------------- Permukaan & kartu ---------------- */
+html[data-theme="dark"] .card,
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .public-form-card,
+html[data-theme="dark"] .faq-item,
+html[data-theme="dark"] .testi-slide,
+html[data-theme="dark"] .ticker,
+html[data-theme="dark"] .step-dot{background:var(--card);border-color:var(--border)}
+html[data-theme="dark"] .card h3,
+html[data-theme="dark"] .card h4,
+html[data-theme="dark"] .section-title,
+html[data-theme="dark"] .faq-q,
+html[data-theme="dark"] .testi-name,
+html[data-theme="dark"] .tracking-head h2,
+html[data-theme="dark"] .komitmen-stat b{color:#a7f3d0}
+html[data-theme="dark"] .section-alt{background:#0a1511}
+
+/* ---------------- Formulir ---------------- */
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea{background:#0f201a;color:var(--text);border-color:var(--border)}
+html[data-theme="dark"] .tracking-form input{background:#0f201a}
+html[data-theme="dark"] .rating-option span{background:var(--card);border-color:var(--border);color:var(--text)}
+
+/* ---------------- Badge & alert ---------------- */
+html[data-theme="dark"] .badge-success{background:#052e16;color:#86efac}
+html[data-theme="dark"] .badge-warning{background:#451a03;color:#fcd34d}
+html[data-theme="dark"] .badge-danger{background:#450a0a;color:#fca5a5}
+html[data-theme="dark"] .badge-info{background:#082f49;color:#7dd3fc}
+html[data-theme="dark"] .public-alert-success{background:#052e16;color:#86efac;border-color:#14532d}
+html[data-theme="dark"] .public-alert-error{background:#450a0a;color:#fca5a5;border-color:#7f1d1d}
+
+/* ---------------- Tombol ---------------- */
+html[data-theme="dark"] .btn-secondary{background:#17352b;color:#a7f3d0}
+html[data-theme="dark"] .btn-outline{color:#a7f3d0;border-color:#2dd4bf}
+
+/* ---------------- Marquee raksasa ---------------- */
+html[data-theme="dark"] .big-marquee{background:#0a1511;border-color:var(--border)}
+html[data-theme="dark"] .big-track span{color:rgba(45,212,191,.08);-webkit-text-stroke:1.6px rgba(45,212,191,.45)}
+
+/* ---------------- Cincin, stepper, bar ---------------- */
+html[data-theme="dark"] .ring .bgc{stroke:rgba(255,255,255,.08)}
+html[data-theme="dark"] .ring .val{color:#a7f3d0}
+html[data-theme="dark"] .ring .val small{color:var(--muted)}
+html[data-theme="dark"] .step-bar{background:var(--border)}
+html[data-theme="dark"] .mini-bar{background:var(--border)}
+html[data-theme="dark"] .testi-dot{background:var(--border)}
+html[data-theme="dark"] .testi-dot.active{background:var(--accent-2)}
