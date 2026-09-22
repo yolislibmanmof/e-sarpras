@@ -61,6 +61,11 @@ $logoPath = $logo !== '' ? rtrim(config('upload.base_path'), '/') . '/' . $logo 
                 Survei
             </a>
 
+            <a class="nav-link<?= strpos($uri, '/transparansi') === 0 ? ' active' : ''; ?>" href="<?= base_url('/transparansi'); ?>">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                Transparansi
+            </a>
+
             <a class="nav-link-admin" href="<?= admin_url('/login'); ?>">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="m10 17 5-5-5-5"/><path d="M15 12H3"/></svg>
                 Login Admin

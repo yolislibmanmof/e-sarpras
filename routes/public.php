@@ -7,6 +7,7 @@ use App\Controllers\PublicSite\ItemRequestController;
 use App\Controllers\PublicSite\MediaController;
 use App\Controllers\PublicSite\SurveyController;
 use App\Controllers\PublicSite\TicketController;
+use App\Controllers\PublicSite\TransparencyController;
 
 $router->get('/', [HomeController::class, 'index']);
 
@@ -17,6 +18,15 @@ $router->get('/media/{a}/{b}', [MediaController::class, 'show']);
 $router->get('/gedung', [BuildingInfoController::class, 'index']);
 $router->get('/gedung/{id}', [BuildingInfoController::class, 'show']);
 $router->get('/ruangan/{id}', [BuildingInfoController::class, 'room']);
+
+// Dashboard Transparansi
+$router->get('/transparansi', [TransparencyController::class, 'index']);
+
+// Kalender Ketersediaan Ruangan
+$router->get('/ruangan/{id}/jadwal', [BuildingInfoController::class, 'schedule']);
+
+// Pelacakan Tiket ala Kurir
+$router->get('/lacak-tiket/{code}', [TicketController::class, 'trackByCode']);
 
 // Tiket Kerusakan
 $router->get('/lapor-kerusakan', [TicketController::class, 'create']);

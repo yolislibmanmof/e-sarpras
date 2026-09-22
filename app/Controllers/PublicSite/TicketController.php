@@ -131,6 +131,53 @@ class TicketController extends Controller
         ], 'public/layouts/main');
     }
 
+    public function trackByCode(string $code): void
+{
+    $db = $this->db();
+    $ticket = $db->selectOne('SELECT * FROM tickets WHERE code = ?', [$code]);
+
+    if ($ticket === null) {
+        \App\Core\Session::flash('error', 'Kode tiket tidak ditemukan.');
+        $this->redirect(base_url('/lacak-laporan'));
+    }
+
+    // Ambil history perubahan status dari audit_log (jika ada) atau sintetis
+    $timeline = [];
+    $timeline[] = ['status' => 'Dilaporkan', 'time' => $ticket['created_at'], 'note' => 'Laporan diterima oleh sistem.'];
+
+    if ($ticket['verified_at'] ?? null) {
+        $timeline[] = ['status' => 'Diverifikasi', 'time' => $ticket['verified_at'], 'note' => 'Petugas memverifikasi laporan.'];
+    }
+    if ($ticket['assigned_at'] ?? null) {
+        $timeline[] = ['status' => 'Ditugaskan', 'time' => $ticket['assigned_at'], 'note' => 'Teknisi ditugaskan menangani.'];
+    }
+    if ($ticket['in_progress_at'] ?? null) {
+        $timeline[] = ['status' => 'Sedang Dikerjakan', 'time' => $ticket['in_progress_at'], 'note' => 'Teknisi sedang di lokasi.'];
+    }
+    if ($ticket['completed_at'] ?? null) {
+        $timeline[] = ['status' => 'Selesai', 'time' => $ticket['completed_at'], 'note' => 'Perbaikan selesai dilakukan.'];
+    }
+
+    // Estimasi SLA berdasarkan urgensi
+    $slaHours = ['Rendah' => 72, 'Sedang' => 48, 'Tinggi' => 24, 'Darurat' => 4];
+    $urgency = $ticket['urgency'] ?? 'Sedang';
+    $deadline = $ticket['sla_deadline'];
+    if ($deadline === null) {
+        $deadline = date('Y-m-d H:i:s', strtotime($ticket['created_at'] . ' +' . ($slaHours[$urgency] ?? 48) . ' hours'));
+    }
+    $remainingHours = max(0, (strtotime($deadline) - time()) / 3600);
+    $progressPct = $ticket['status'] === 'Selesai' ? 100 : min(95, (int) ((count($timeline) - 1) / 5 * 100));
+
+    $this->view('public/pages/ticket_tracking_detail', [
+        'title'       => 'Lacak Tiket #' . e($ticket['code']),
+        'ticket'      => $ticket,
+        'timeline'    => $timeline,
+        'deadline'    => $deadline,
+        'remaining'   => $remainingHours,
+        'progressPct' => $progressPct,
+    ], 'public/layouts/main');
+}
+
     private function grouped(string $table): array
     {
         $sql = $table === 'rooms'

@@ -93,3 +93,8 @@
 2026-08-25 20:55:34 | login.success | auth | user:1
 2026-08-25 20:57:32 | backup.view | backup | user:1
 2026-08-25 20:57:35 | login.logout | auth | user:1
+2026-09-22 19:48:52 | login.failed | auth | user:-
+2026-09-22 19:48:59 | login.success | auth | user:1
+2026-09-22 19:52:42 | login.logout | auth | user:1
+2026-09-22 19:52:45 | login.success | auth | user:1
+2026-09-22 20:32:50 | login.logout | auth | user:1
