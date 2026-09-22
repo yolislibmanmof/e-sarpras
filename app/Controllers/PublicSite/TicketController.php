@@ -131,52 +131,73 @@ class TicketController extends Controller
         ], 'public/layouts/main');
     }
 
+    /**
+     * Pelacakan tiket ala kurir (live) — diakses via /lacak-tiket/{ticket_code}.
+     * Timeline dibangun dari tabel ticket_histories yang sudah ada.
+     */
     public function trackByCode(string $code): void
-{
-    $db = $this->db();
-    $ticket = $db->selectOne('SELECT * FROM tickets WHERE code = ?', [$code]);
+    {
+        $db = $this->db();
 
-    if ($ticket === null) {
-        \App\Core\Session::flash('error', 'Kode tiket tidak ditemukan.');
-        $this->redirect(base_url('/lacak-laporan'));
-    }
+        /* PERBAIKAN 1: kolom tiket_code (bukan code), dengan join lokasi */
+        $ticket = $db->selectOne(
+            "SELECT t.*, b.name AS building_name, r.name AS room_name
+             FROM tickets t
+             LEFT JOIN buildings b ON b.id = t.building_id
+             LEFT JOIN rooms r ON r.id = t.room_id
+             WHERE t.ticket_code = ?",
+            [$code]
+        );
 
-    // Ambil history perubahan status dari audit_log (jika ada) atau sintetis
-    $timeline = [];
-    $timeline[] = ['status' => 'Dilaporkan', 'time' => $ticket['created_at'], 'note' => 'Laporan diterima oleh sistem.'];
+        if ($ticket === null) {
+            Session::flash('error', 'Kode tiket tidak ditemukan.');
+            $this->redirect(base_url('/lacak-laporan'));
+        }
 
-    if ($ticket['verified_at'] ?? null) {
-        $timeline[] = ['status' => 'Diverifikasi', 'time' => $ticket['verified_at'], 'note' => 'Petugas memverifikasi laporan.'];
-    }
-    if ($ticket['assigned_at'] ?? null) {
-        $timeline[] = ['status' => 'Ditugaskan', 'time' => $ticket['assigned_at'], 'note' => 'Teknisi ditugaskan menangani.'];
-    }
-    if ($ticket['in_progress_at'] ?? null) {
-        $timeline[] = ['status' => 'Sedang Dikerjakan', 'time' => $ticket['in_progress_at'], 'note' => 'Teknisi sedang di lokasi.'];
-    }
-    if ($ticket['completed_at'] ?? null) {
-        $timeline[] = ['status' => 'Selesai', 'time' => $ticket['completed_at'], 'note' => 'Perbaikan selesai dilakukan.'];
-    }
+        /* PERBAIKAN 3: timeline dari ticket_histories (sudah dipakai di store) */
+        $histories = $db->select(
+            'SELECT new_status, note, created_at FROM ticket_histories WHERE ticket_id = ? ORDER BY id ASC',
+            [$ticket['id']]
+        );
 
-    // Estimasi SLA berdasarkan urgensi
-    $slaHours = ['Rendah' => 72, 'Sedang' => 48, 'Tinggi' => 24, 'Darurat' => 4];
-    $urgency = $ticket['urgency'] ?? 'Sedang';
-    $deadline = $ticket['sla_deadline'];
-    if ($deadline === null) {
-        $deadline = date('Y-m-d H:i:s', strtotime($ticket['created_at'] . ' +' . ($slaHours[$urgency] ?? 48) . ' hours'));
-    }
-    $remainingHours = max(0, (strtotime($deadline) - time()) / 3600);
-    $progressPct = $ticket['status'] === 'Selesai' ? 100 : min(95, (int) ((count($timeline) - 1) / 5 * 100));
+        $timeline = [];
+        foreach ($histories as $h) {
+            $timeline[] = [
+                'status' => $h['new_status'],
+                'time'   => $h['created_at'],
+                'note'   => $h['note'] ?? '',
+            ];
+        }
+        if ($timeline === []) {
+            $timeline[] = [
+                'status' => $ticket['status'],
+                'time'   => $ticket['created_at'],
+                'note'   => 'Laporan diterima oleh sistem.',
+            ];
+        }
 
-    $this->view('public/pages/ticket_tracking_detail', [
-        'title'       => 'Lacak Tiket #' . e($ticket['code']),
-        'ticket'      => $ticket,
-        'timeline'    => $timeline,
-        'deadline'    => $deadline,
-        'remaining'   => $remainingHours,
-        'progressPct' => $progressPct,
-    ], 'public/layouts/main');
-}
+        /* PERBAIKAN 2: SLA berdasarkan priority sistem (Normal/Mendesak/Darurat) */
+        $slaHours = ['Normal' => 72, 'Mendesak' => 48, 'Darurat' => 12];
+        $priority = $ticket['priority'] ?? 'Normal';
+
+        $deadline = $ticket['sla_deadline'] ?? null;
+        if ($deadline === null || $deadline === '') {
+            $deadline = date('Y-m-d H:i:s', strtotime($ticket['created_at'] . ' +' . ($slaHours[$priority] ?? 72) . ' hours'));
+        }
+
+        $done        = $ticket['status'] === 'Selesai';
+        $remaining   = $done ? 0 : max(0, (int) round((strtotime($deadline) - time()) / 3600));
+        $progressPct = $done ? 100 : min(90, 20 + count($timeline) * 15);
+
+        $this->view('public/pages/ticket_tracking_detail', [
+            'title'       => 'Lacak Tiket ' . $ticket['ticket_code'],
+            'ticket'      => $ticket,
+            'timeline'    => $timeline,
+            'deadline'    => $deadline,
+            'remaining'   => $remaining,
+            'progressPct' => $progressPct,
+        ], 'public/layouts/main');
+    }
 
     private function grouped(string $table): array
     {

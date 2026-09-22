@@ -53,6 +53,7 @@
                 </p>
                 <div class="form-actions" style="margin-top:1.2rem;">
                     <a class="btn btn-secondary btn-sm" href="<?= base_url('/gedung/' . (int) $room['building_id']); ?>">Lihat Gedung</a>
+                    <a class="btn btn-secondary btn-sm" href="<?= base_url('/ruangan/' . (int) $room['id'] . '/jadwal'); ?>">Lihat Jadwal 14 Hari</a>
                     <a class="btn btn-outline btn-sm" href="<?= base_url('/peminjaman/ruangan'); ?>">Ajukan Peminjaman</a>
                 </div>
             </div>

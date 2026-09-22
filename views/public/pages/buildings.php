@@ -75,7 +75,7 @@
 <section class="section" style="padding-top:0.5rem;">
     <div class="container">
         <h2 class="section-title">Jelajahi Ruangan</h2>
-        <p class="section-lead">Ruangan yang dapat Anda lihat profilnya, lengkap dengan foto, jenis, kapasitas, dan kondisi terkini.</p>
+        <p class="section-lead">Ruangan yang dapat Anda lihat profilnya, lengkap dengan foto, jenis, kapasitas, kondisi, dan jadwal ketersediaan.</p>
 
         <?php if (empty($rooms)): ?>
             <div class="public-alert public-alert-error">Belum ada ruangan yang dipublikasikan.</div>
@@ -98,7 +98,10 @@
                                 <span class="badge badge-success">Aksesibel</span>
                             <?php endif; ?>
                         </p>
-                        <a class="service-link" href="<?= base_url('/ruangan/' . (int) $room['id']); ?>">Lihat Detail</a>
+                        <div style="display:flex;gap:1rem;margin-top:.4rem;flex-wrap:wrap;">
+                            <a class="service-link" href="<?= base_url('/ruangan/' . (int) $room['id']); ?>">Lihat Detail</a>
+                            <a class="service-link" href="<?= base_url('/ruangan/' . (int) $room['id'] . '/jadwal'); ?>">Lihat Jadwal</a>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>

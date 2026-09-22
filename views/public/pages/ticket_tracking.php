@@ -21,19 +21,6 @@ $current = $ticket !== null ? (int) ($order[$ticket['status']] ?? 1) : 0;
             <button type="submit" class="btn btn-primary">Lacak</button>
         </form>
 
-        <?php if ($ticket !== null): ?>
-            <?php if ($ticket['status'] === 'Ditolak'): ?>
-                <div class="public-alert public-alert-error">Laporan ditolak. Silakan lihat catatan pada riwayat.</div>
-            <?php else: ?>
-                <div class="stepper">
-                    <?php for ($s = 1; $s <= 4; $s++): ?>
-                        <span class="step-dot<?= $current >= $s ? ' on' : ''; ?>"><?= $s; ?></span>
-                        <?php if ($s < 4): ?><span class="step-bar<?= $current > $s ? ' on' : ''; ?>"></span><?php endif; ?>
-                    <?php endfor; ?>
-                </div>
-            <?php endif; ?>
-        <?php endif; ?>
-
         <?php if ($code !== '' && $ticket === null): ?>
             <div class="public-alert public-alert-error">Tiket dengan kode tersebut tidak ditemukan.</div>
         <?php endif; ?>
@@ -47,10 +34,28 @@ $current = $ticket !== null ? (int) ($order[$ticket['status']] ?? 1) : 0;
                     </div>
                     <span class="badge <?= e(status_badge_class($ticket['status'])); ?>"><?= e($ticket['status']); ?></span>
                 </div>
+
+                <?php if ($ticket['status'] === 'Ditolak'): ?>
+                    <div class="public-alert public-alert-error" style="margin-top:1rem;">Laporan ditolak. Silakan lihat catatan pada riwayat.</div>
+                <?php else: ?>
+                    <div class="stepper">
+                        <?php for ($s = 1; $s <= 4; $s++): ?>
+                            <span class="step-dot<?= $current >= $s ? ' on' : ''; ?>"><?= $s; ?></span>
+                            <?php if ($s < 4): ?><span class="step-bar<?= $current > $s ? ' on' : ''; ?>"></span><?php endif; ?>
+                        <?php endfor; ?>
+                    </div>
+                <?php endif; ?>
+
                 <p class="tracking-desc"><?= e($ticket['description']); ?></p>
                 <?php if ($ticket['estimated_completion'] !== null): ?>
                     <p class="tracking-eta">Estimasi selesai: <strong><?= e(format_tanggal($ticket['estimated_completion'])); ?></strong></p>
                 <?php endif; ?>
+
+                <div style="margin-top:1.2rem;text-align:center;">
+                    <a class="btn btn-primary" href="<?= base_url('/lacak-tiket/' . urlencode($ticket['ticket_code'])); ?>">
+                        Lihat Pelacakan Live ala Kurir
+                    </a>
+                </div>
             </div>
 
             <div class="vtimeline" style="max-width:660px; margin:2.2rem auto 0;">

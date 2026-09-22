@@ -103,7 +103,6 @@ class BuildingInfoController extends Controller
             ? $db->selectOne('SELECT * FROM floors WHERE id = ?', [$room['floor_id']])
             : null;
 
-        /* PERBAIKAN: `condition` diapit backtick (reserved word MySQL) */
         $assets = $db->select(
             'SELECT code, name, `condition` FROM assets WHERE room_id = ? ORDER BY code ASC',
             [$id]
@@ -114,6 +113,61 @@ class BuildingInfoController extends Controller
             'room'   => $room,
             'floor'  => $floor,
             'assets' => $assets,
+        ], 'public/layouts/main');
+    }
+
+    /** Kalender ketersediaan ruangan 14 hari ke depan (publik). */
+    public function schedule(string $id): void
+    {
+        $db = $this->db();
+        $room = $db->selectOne(
+            "SELECT r.*, b.name AS building_name
+             FROM rooms r
+             LEFT JOIN buildings b ON b.id = r.building_id
+             WHERE r.id = ?",
+            [$id]
+        );
+
+        if ($room === null) {
+            Session::flash('error', 'Ruangan tidak ditemukan.');
+            $this->redirect(base_url('/gedung'));
+        }
+
+        $today = date('Y-m-d');
+        $end   = date('Y-m-d', strtotime('+14 days'));
+
+        $bookings = $db->select(
+            "SELECT start_at, end_at, activity_name, status
+             FROM room_bookings
+             WHERE room_id = ?
+               AND start_at >= ?
+               AND start_at <= ?
+               AND status NOT IN ('Ditolak', 'Dibatalkan')
+             ORDER BY start_at ASC",
+            [$id, $today . ' 00:00:00', $end . ' 23:59:59']
+        );
+
+        $byDate = [];
+        for ($d = strtotime($today); $d <= strtotime($end); $d += 86400) {
+            $byDate[date('Y-m-d', $d)] = [];
+        }
+        foreach ($bookings as $b) {
+            $date = date('Y-m-d', strtotime($b['start_at']));
+            if (isset($byDate[$date])) {
+                $byDate[$date][] = [
+                    'start' => date('H:i', strtotime($b['start_at'])),
+                    'end'   => date('H:i', strtotime($b['end_at'])),
+                    'title' => $b['activity_name'] ?? 'Dipinjam',
+                ];
+            }
+        }
+
+        $this->view('public/pages/room_schedule', [
+            'title'  => 'Jadwal ' . $room['name'],
+            'room'   => $room,
+            'byDate' => $byDate,
+            'start'  => $today,
+            'end'    => $end,
         ], 'public/layouts/main');
     }
 }
