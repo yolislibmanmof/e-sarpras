@@ -1,7 +1,9 @@
 <?php
 
+use App\Controllers\PublicSite\AssetProfileController;
 use App\Controllers\PublicSite\BorrowController;
 use App\Controllers\PublicSite\BuildingInfoController;
+use App\Controllers\PublicSite\CampusMapController;
 use App\Controllers\PublicSite\HomeController;
 use App\Controllers\PublicSite\ItemRequestController;
 use App\Controllers\PublicSite\MediaController;
@@ -11,13 +13,19 @@ use App\Controllers\PublicSite\TransparencyController;
 
 $router->get('/', [HomeController::class, 'index']);
 
-// Berkas media (foto gedung/ruangan/logo) dari storage
+// Berkas media (foto gedung/ruangan/logo/qr-cache) dari storage
 $router->get('/media/{a}/{b}', [MediaController::class, 'show']);
 
 // Informasi Gedung & Ruang
 $router->get('/gedung', [BuildingInfoController::class, 'index']);
 $router->get('/gedung/{id}', [BuildingInfoController::class, 'show']);
 $router->get('/ruangan/{id}', [BuildingInfoController::class, 'room']);
+
+// Peta Interaktif Kampus (Batch 2)
+$router->get('/peta', [CampusMapController::class, 'index']);
+
+// Profil Aset Publik (Batch 2)
+$router->get('/aset-profil/{id}', [AssetProfileController::class, 'show']);
 
 // Dashboard Transparansi
 $router->get('/transparansi', [TransparencyController::class, 'index']);

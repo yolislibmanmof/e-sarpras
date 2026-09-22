@@ -10,6 +10,7 @@ use App\Controllers\Admin\AuthController;
 use App\Controllers\Admin\BackupController;
 use App\Controllers\Admin\BorrowController;
 use App\Controllers\Admin\BuildingController;
+use App\Controllers\Admin\CampusMapController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\DepreciationController;
 use App\Controllers\Admin\DispositionController;
@@ -57,6 +58,11 @@ $router->post('/ruangan', [RoomController::class, 'store'], ['auth', 'perm:room.
 $router->get('/ruangan/{id}/ubah', [RoomController::class, 'edit'], ['auth', 'perm:room.update']);
 $router->post('/ruangan/{id}/ubah', [RoomController::class, 'update'], ['auth', 'perm:room.update', 'csrf']);
 $router->post('/ruangan/{id}/hapus', [RoomController::class, 'destroy'], ['auth', 'perm:room.delete', 'csrf']);
+
+// Peta Kampus (Batch 2)
+$router->get('/peta-kampus', [CampusMapController::class, 'index'], ['auth', 'perm:building.update']);
+$router->post('/peta-kampus', [CampusMapController::class, 'store'], ['auth', 'perm:building.update', 'csrf']);
+$router->post('/peta-kampus/{id}/hapus', [CampusMapController::class, 'destroy'], ['auth', 'perm:building.update', 'csrf']);
 
 // Master Kategori Aset
 $router->get('/aset-kategori', [AssetCategoryController::class, 'index'], ['auth', 'perm:asset.view']);

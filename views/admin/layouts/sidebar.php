@@ -26,6 +26,10 @@ $uri = current_uri();
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-4h6v4"/></svg>
             <span class="label">Ruangan</span>
         </a>
+        <a class="side-link<?= strpos($uri, '/peta-kampus') === 0 ? ' active' : ''; ?>" href="<?= admin_url('/peta-kampus'); ?>" title="Peta Kampus">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+            <span class="label">Peta Kampus</span>
+        </a>
         <a class="side-link<?= strpos($uri, '/aset') === 0 && strpos($uri, '/aset/penyusutan') !== 0 ? ' active' : ''; ?>" href="<?= admin_url('/aset'); ?>" title="Aset">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg>
             <span class="label">Aset</span>

@@ -30,6 +30,11 @@ $logoPath = $logo !== '' ? rtrim(config('upload.base_path'), '/') . '/' . $logo 
                 Gedung &amp; Ruang
             </a>
 
+            <a class="nav-link<?= strpos($uri, '/peta') === 0 ? ' active' : ''; ?>" href="<?= base_url('/peta'); ?>">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                Peta Kampus
+            </a>
+
             <div class="nav-drop<?= $isService ? ' active-drop' : ''; ?>">
                 <button type="button" class="nav-link nav-drop-btn">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/></svg>
