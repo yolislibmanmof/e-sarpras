@@ -54,5 +54,6 @@
     <script src="<?= asset_url('js/ticket-form.js'); ?>"></script>
     <script src="<?= asset_url('js/ultimate.js'); ?>"></script>
     <script src="<?= asset_url('js/theme.js'); ?>"></script>
+    <script src="<?= asset_url('js/perf.js'); ?>" defer></script>
 </body>
 </html>
